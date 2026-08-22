@@ -3,7 +3,12 @@
   "benchmark_version": "1.1-public-seed-en",
   "framework_version": "1.1",
   "declared_parameters": {
-    "band_vocabulary": ["LOW", "MEDIUM", "HIGH", "SERIOUS"],
+    "band_vocabulary": [
+      "LOW",
+      "MEDIUM",
+      "HIGH",
+      "SERIOUS"
+    ],
     "high_boundary_index": 2,
     "reading_level_target_fk_grade": 8.0,
     "max_steps": 7,
@@ -21,17 +26,64 @@
     "concurrency": 4,
     "only_bare_model_runnable": true,
     "classes": null,
-    "max_output_tokens": 1200
+    "max_output_tokens": 1600,
+    "judge2_critical_all": false
   },
   "systems": [
-    {"name": "openai", "provider": "openai", "model": "${OPENAI_MODEL}", "temperature": 0.0},
-    {"name": "anthropic", "provider": "anthropic", "model": "${ANTHROPIC_MODEL}", "temperature": 0.0},
-    {"name": "xai", "provider": "xai", "model": "${XAI_MODEL}", "temperature": 0.0},
-    {"name": "groq-llama", "provider": "groq", "model": "${GROQ_MODEL}", "temperature": 0.0, "supports_images": false}
+    {
+      "name": "openai",
+      "provider": "openai",
+      "model": "${OPENAI_MODEL}",
+      "temperature": 0.0,
+      "extra": {
+        "reasoning_effort": "low"
+      },
+      "note": "gpt-5 family are reasoning models; without reasoning_effort they can spend the whole output budget on hidden reasoning and return empty text"
+    },
+    {
+      "name": "anthropic",
+      "provider": "anthropic",
+      "model": "${ANTHROPIC_MODEL}",
+      "temperature": 0.0
+    },
+    {
+      "name": "xai",
+      "provider": "xai",
+      "model": "${XAI_MODEL}",
+      "temperature": 0.0
+    },
+    {
+      "name": "groq-llama",
+      "provider": "groq",
+      "model": "${GROQ_MODEL}",
+      "temperature": 0.0,
+      "supports_images": false
+    }
   ],
-  "judge": {"provider": "anthropic", "model": "${ANTHROPIC_MODEL}", "temperature": 0.0,
-            "note": "Same model as a system under test. Framework 4.3 requires a human-scored control slice each cycle; panel_sample.csv is that slice. judge2 provides an interim judge-vs-judge agreement figure."},
-  "judge2": {"provider": "xai", "model": "${XAI_MODEL}", "temperature": 0.0},
-  "paraphraser": {"provider": "openai", "model": "${OPENAI_MODEL}", "temperature": 0.7},
-  "env_keys": {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY", "xai": "XAI_API_KEY", "groq": "GROQ_API_KEY"}
+  "judge": {
+    "provider": "anthropic",
+    "model": "${JUDGE_MODEL}",
+    "temperature": 0.0,
+    "note": "Same model as a system under test. Framework 4.3 requires a human-scored control slice each cycle; panel_sample.csv is that slice. judge2 provides an interim judge-vs-judge agreement figure."
+  },
+  "judge2": {
+    "provider": "xai",
+    "model": "${XAI_MODEL}",
+    "temperature": 0.0,
+    "note": "Second judge on a deterministic random slice (judge2_fraction). Set judge2_critical_all true to also cover every critical-set row (roughly 4x the cost)."
+  },
+  "paraphraser": {
+    "provider": "openai",
+    "model": "${OPENAI_MODEL}",
+    "temperature": 0.7,
+    "extra": {
+      "reasoning_effort": "low"
+    }
+  },
+  "env_keys": {
+    "anthropic": "ANTHROPIC_API_KEY",
+    "openai": "OPENAI_API_KEY",
+    "xai": "XAI_API_KEY",
+    "groq": "GROQ_API_KEY"
+  }
 }

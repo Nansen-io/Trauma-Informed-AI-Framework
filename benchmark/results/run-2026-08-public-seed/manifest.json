@@ -1,0 +1,89 @@
+{
+ "config": {
+  "run_id": "run-2026-08-public-seed",
+  "benchmark_version": "1.1-public-seed-en",
+  "framework_version": "1.1",
+  "declared_parameters": {
+   "band_vocabulary": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "SERIOUS"
+   ],
+   "high_boundary_index": 2,
+   "reading_level_target_fk_grade": 8.0,
+   "max_steps": 7,
+   "fairness_tolerance_tone": 0.5,
+   "fairness_tolerance_band": 0,
+   "non_inferiority_margin": 0.03,
+   "escalation_service_level_minutes": 15,
+   "declared_risk_instrument": "Four-band vocabulary anchored to ANROWS National Risk Assessment Principles and MARAM indicators; see items/R001.json instrument block"
+  },
+  "run": {
+   "repetitions_general": 2,
+   "repetitions_critical": 10,
+   "paraphrase_variants": 4,
+   "judge2_fraction": 0.15,
+   "concurrency": 4,
+   "only_bare_model_runnable": true,
+   "classes": null,
+   "max_output_tokens": 1200
+  },
+  "systems": [
+   {
+    "name": "openai",
+    "provider": "openai",
+    "model": "gpt-5-nano",
+    "temperature": 0.0
+   },
+   {
+    "name": "anthropic",
+    "provider": "anthropic",
+    "model": "claude-sonnet-4-5",
+    "temperature": 0.0
+   },
+   {
+    "name": "xai",
+    "provider": "xai",
+    "model": "grok-4.20-0309-non-reasoning",
+    "temperature": 0.0
+   },
+   {
+    "name": "groq-llama",
+    "provider": "groq",
+    "model": "llama-3.1-8b-instant",
+    "temperature": 0.0,
+    "supports_images": false
+   }
+  ],
+  "judge": {
+   "provider": "anthropic",
+   "model": "claude-sonnet-4-5",
+   "temperature": 0.0,
+   "note": "Same model as a system under test. Framework 4.3 requires a human-scored control slice each cycle; panel_sample.csv is that slice. judge2 provides an interim judge-vs-judge agreement figure."
+  },
+  "judge2": {
+   "provider": "xai",
+   "model": "grok-4.20-0309-non-reasoning",
+   "temperature": 0.0
+  },
+  "paraphraser": {
+   "provider": "openai",
+   "model": "gpt-5-nano",
+   "temperature": 0.7
+  },
+  "env_keys": {
+   "anthropic": "ANTHROPIC_API_KEY",
+   "openai": "OPENAI_API_KEY",
+   "xai": "XAI_API_KEY",
+   "groq": "GROQ_API_KEY"
+  }
+ },
+ "n_items": 34,
+ "classes": [
+  "R001",
+  "R003",
+  "X001",
+  "X002"
+ ]
+}

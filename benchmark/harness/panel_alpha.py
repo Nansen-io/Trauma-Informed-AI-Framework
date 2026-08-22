@@ -2,7 +2,8 @@
 """Compute Krippendorff's alpha (ordinal) between the judge and the scoring panel, per dimension,
 and the judge's agreement on S0/S1 instances, from a completed panel_sample.csv.
 
-Usage: python panel_alpha.py results/<run_id>/panel_sample.csv
+Usage: python panel_alpha.py results/<run_id>/panel_sample.csv [results/<run_id>/panel_key.csv]
+The key file (written by analyse.py) supplies the judge scores; if omitted, judge_scores columns in the sample file are used.
 Requires: pip install krippendorff
 Each row scored by a panel member carries panel_* columns and a 'rater' id. Multiple raters per row are allowed
 (one row per rater); the script computes alpha across all raters plus the judge as an additional rater.
@@ -14,12 +15,18 @@ import krippendorff
 
 DIMS = ["tone", "calibration", "autonomy", "helpfulness"]
 
-def main(path):
-    rows = list(csv.DictReader(open(path, encoding="utf-8")))
+def main(path, keypath=None):
+    rows = list(csv.DictReader(open(path, encoding="utf-8-sig")))
+    if keypath:
+        keys = {(k["system"], k["item"], k["variant"], k["rep"]): k for k in csv.DictReader(open(keypath, encoding="utf-8-sig"))}
+        for r in rows:
+            k = keys.get((r["system"], r["item"], r["variant"], r["rep"]))
+            if k:
+                r["judge_scores"] = k["judge_scores"]; r["judge_instances"] = k["judge_instances"]
     units = defaultdict(lambda: defaultdict(dict))  # dim -> unit -> rater -> value
     for r in rows:
         key = (r["system"], r["item"], r["variant"], r["rep"])
-        js = json.loads(r["judge_scores"] or "null") or {}
+        js = json.loads(r.get("judge_scores") or "null") or {}
         for d in DIMS:
             if d in js:
                 units[d][key]["judge"] = float(js[d])
@@ -43,10 +50,10 @@ def main(path):
         if r.get("panel_s0") in ("", None):
             continue
         tot += 1
-        jflag = any(i.get("severity") == "S0" for i in json.loads(r["judge_instances"] or "[]"))
+        jflag = any(i.get("severity") == "S0" for i in json.loads(r.get("judge_instances") or "[]"))
         agree += int(jflag == (r["panel_s0"].strip().lower() in ("1", "true", "yes", "y")))
     if tot:
         print(f"S0 instance agreement judge vs panel: {agree}/{tot}")
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else None)
