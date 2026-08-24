@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TIAB benchmark control panel</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>🧭</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">TIAB</span>
+    <span class="sub">public benchmark · control panel</span>
+  </div>
+  <div class="status" id="status">
+    <span class="pill" id="statusPill">idle</span>
+    <span class="muted" id="statusDetail">no run in progress</span>
+  </div>
+  <div class="topActions">
+    <button type="button" id="stopBtn" class="danger" hidden>Stop run</button>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button type="button" data-tab="dashboard" class="active">Dashboard</button>
+  <button type="button" data-tab="setup">Set up</button>
+  <button type="button" data-tab="run">Run</button>
+  <button type="button" data-tab="results">Results</button>
+  <button type="button" data-tab="explore">Explore</button>
+  <button type="button" data-tab="items">Item set</button>
+  <button type="button" data-tab="help">What it means</button>
+</nav>
+
+<main>
+  <!-- ---------------------------------------------------------------- dashboard -->
+  <section id="tab-dashboard" class="tab active">
+    <div class="card">
+      <div class="row wrap">
+        <h2 class="flush">What is working and what is failing</h2>
+        <span class="grow"></span>
+        <label class="inline"><input type="checkbox" id="boardOnlyFails"> only show failing criteria</label>
+        <button type="button" class="ghost" id="boardRefresh">Refresh</button>
+      </div>
+      <p class="hint" id="boardNote">Each row is that system's most recent result. It stays until that system is run again — running one tool does not change another tool's row.</p>
+      <div id="boardWrap"><div class="loading">building from every run on disk…</div></div>
+      <div class="legend">
+        <span><i class="sw pass"></i> meets the gate</span>
+        <span><i class="sw fail"></i> fails it</span>
+        <span><i class="sw na"></i> not established — nothing ran against it, or it cannot be claimed at this item count</span>
+      </div>
+    </div>
+    <div id="boardDetail"></div>
+  </section>
+
+  <!-- ---------------------------------------------------------------- set up -->
+  <section id="tab-setup" class="tab">
+    <div class="setup-layout">
+    <aside class="planpanel" id="planCard">
+    <h2>What this will do</h2>
+    <div id="planBody" class="loading">working it out…</div>
+    <div class="row planActions">
+      <button type="button" id="startBtn" class="primary">Start run</button>
+      <button type="button" id="validatorsBtn" class="ghost">Run validator self-tests</button>
+      <span class="muted" id="planNote"></span>
+    </div>
+    <pre id="validatorsOut" hidden></pre>
+    </aside>
+    <div class="setupmain">
+    <div class="grid2">
+      <div class="col">
+        <div class="card" id="envCard">
+          <div class="row wrap">
+            <h2 class="flush">Before you run</h2>
+            <span class="grow"></span>
+            <button type="button" class="ghost" id="doctorBtn">Check the instrument</button>
+            <button type="button" class="ghost" id="doctorProbeBtn" title="One tiny call per model, to prove the ids actually work">Check + probe</button>
+          </div>
+          <p class="hint">Three things can go wrong: the environment, the instrument, or the system under test. Only the last is worth measuring, so the first two are checked here rather than discovered as results.</p>
+          <div id="doctorBody" class="loading">not checked yet</div>
+          <details><summary>Environment detail</summary><div id="envBody" class="loading">checking…</div></details>
+        </div>
+
+        <div class="card">
+          <h2>How much to run</h2>
+          <p class="hint">The instrument is the same at every size. A smaller run touches fewer items and repeats each one fewer times, so it finds fewer failures — it does not measure something different. Only the full set at the declared repetitions supports a gate claim.</p>
+          <div class="presets" id="presets"></div>
+          <div class="sliders">
+            <label>Items
+              <span class="val" id="maxItemsVal"></span>
+              <input type="range" id="maxItems" min="1" max="200" step="1">
+              <small>Capped across the selected classes: one item from each class, then a second, and so on, so a small run still touches every class.</small>
+            </label>
+            <label>Variants per item
+              <span class="val" id="variantsVal"></span>
+              <input type="range" id="variants" min="1" max="8" step="1">
+              <small>Original, seeded typo and colloquial register are always present. Above 2, the extra ones are model-written paraphrases and cost a paraphraser call each.</small>
+            </label>
+            <label>Repetitions — general items
+              <span class="val" id="repsGeneralVal"></span>
+              <input type="range" id="repsGeneral" min="1" max="10" step="1">
+            </label>
+            <label>Repetitions — critical set
+              <span class="val" id="repsCriticalVal"></span>
+              <input type="range" id="repsCritical" min="1" max="20" step="1">
+              <small>The framework declares 2 and 10. Hosted inference is not deterministic at temperature 0; repetitions are how run-to-run spread is measured.</small>
+            </label>
+            <label>Concurrency
+              <span class="val" id="concurrencyVal"></span>
+              <input type="range" id="concurrency" min="1" max="24" step="1">
+              <small>Parallel calls per stage. Raise until the providers start rate limiting, then back off.</small>
+            </label>
+          </div>
+          <div class="row wrap">
+            <label class="inline"><input type="checkbox" id="noJudge2"> Skip the second judge</label>
+            <label class="inline">Second-judge slice <input type="number" id="judge2Fraction" min="0" max="1" step="0.05" class="narrow"></label>
+          </div>
+          <div class="row">
+            <label class="inline"><input type="checkbox" id="mock"> Offline dry run</label>
+            <small>Runs every stage against a mock provider: no network calls, no cost, invented content. Use it to check the plumbing and see the whole pipeline work before spending anything. Nothing it produces is a measurement.</small>
+          </div>
+          <div class="row">
+            <label class="inline">Stage
+              <select id="stage">
+                <option value="all">all — variants, systems, judge, second judge</option>
+                <option value="variants">variants only</option>
+                <option value="sut">systems under test only</option>
+                <option value="judge">judge only</option>
+                <option value="judge2">second judge only</option>
+                <option value="rescore">rescore (no calls)</option>
+              </select>
+            </label>
+            <label class="inline">Run id <input type="text" id="runId" spellcheck="false"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card">
+          <h2>Systems under test</h2>
+          <div id="systemsList" class="checklist"></div>
+          <div id="scopeNotes"></div>
+          <div id="rolesList" class="roles"></div>
+        </div>
+
+        <div class="card">
+          <h2>Which model runs which test</h2>
+          <p class="hint">A tick runs that class against that system. A product is not run against the whole domain by default — its config excludes what it has no ingestion path for, and declares what it covers.</p>
+          <div class="row tight">
+            <button type="button" class="ghost" id="selAll">All</button>
+            <button type="button" class="ghost" id="selNone">None</button>
+            <button type="button" class="ghost" id="selCritical">Critical set</button>
+            <button type="button" class="ghost" id="selSmoke">One per suite</button>
+          </div>
+          <div id="matrixWrap" class="matrixwrap"><table id="matrix" class="matrix"></table></div>
+          <div class="legend">
+            <span><i class="sw out"></i> declared out of scope — still run, and declining it well is the pass</span>
+            <span><i class="sw ex"></i> excluded in config — no ingestion path, not run</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    </div>
+  </section>
+
+  <!-- ---------------------------------------------------------------- run -->
+  <section id="tab-run" class="tab">
+    <div id="runEmpty" class="empty">No run has been started in this session. Set one up on the first tab, or open a finished run under Results.</div>
+    <div id="runLive" hidden>
+      <div class="card">
+        <h2>Progress</h2>
+        <div id="stageBars"></div>
+        <div id="runTotals" class="totals"></div>
+      </div>
+      <div class="grid2">
+        <div class="card feedcard">
+          <h2>What is happening <span class="muted" id="feedCount"></span></h2>
+          <div class="row tight">
+            <label class="inline"><input type="checkbox" id="followFeed" checked> follow</label>
+            <select id="feedFilter">
+              <option value="">every call</option>
+              <option value="flagged">flagged only</option>
+              <option value="error">errors only</option>
+              <option value="sut">model responses</option>
+              <option value="judge">judge results</option>
+            </select>
+          </div>
+          <div id="feed" class="feed"></div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <h2>Findings so far</h2>
+            <p class="hint">Instances, not scores, decide the gates. Anything here is a flagged failure with the quote that raised it — the panel confirms or overturns them before any claim is made.</p>
+            <div id="findings" class="findings"></div>
+          </div>
+          <div class="card">
+            <h2>Harness output</h2>
+            <pre id="log" class="log"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------------------------------------------------------- results -->
+  <section id="tab-results" class="tab">
+    <div class="card">
+      <div class="row wrap">
+        <label class="inline">Run <select id="runPicker"></select></label>
+        <button type="button" class="ghost" id="analyseBtn">Compute the report</button>
+        <button type="button" class="ghost" id="refreshRuns">Refresh</button>
+        <button type="button" class="ghost" id="manageBtn">Manage runs</button>
+        <span class="muted" id="resultsNote"></span>
+      </div>
+      <div id="runMeta"></div>
+      <div id="systemTabs" class="systabs"></div>
+    </div>
+    <div id="managePanel" class="card" hidden>
+      <div class="row wrap">
+        <h2 class="flush">Runs on disk</h2>
+        <span class="grow"></span>
+        <button type="button" class="danger" id="deleteAllBtn">Delete every run</button>
+      </div>
+      <p class="hint">Deleting is immediate and cannot be undone from here. Removing a single system from a run also removes that run's computed report, because it would otherwise describe systems that are no longer there.</p>
+      <div id="runsTable"></div>
+    </div>
+    <div id="resultsBody"></div>
+  </section>
+
+  <!-- ---------------------------------------------------------------- explore -->
+  <section id="tab-explore" class="tab">
+    <div class="card">
+      <div class="row wrap">
+        <label class="inline">Run <select id="expRun"></select></label>
+        <label class="inline">System <select id="expSystem"><option value="">all</option></select></label>
+        <label class="inline">Class <select id="expClass"><option value="">all</option></select></label>
+        <label class="inline">Show <select id="expFlag">
+          <option value="any">flagged (S0/S1/S2)</option>
+          <option value="s0">S0 only</option>
+          <option value="s1">S1 only</option>
+          <option value="validator">failed a validator</option>
+          <option value="band_off">band ≠ gold</option>
+          <option value="declined">refused or declined</option>
+          <option value="declined_ok">declined correctly (out of scope)</option>
+          <option value="scope_fail">scope handled badly</option>
+          <option value="out_of_scope">out-of-scope classes</option>
+          <option value="judge_failed">judge failed to parse</option>
+          <option value="clean">clean</option>
+          <option value="">everything</option>
+        </select></label>
+        <label class="inline">Item <input id="expItem" placeholder="R001-03" class="narrow8" spellcheck="false"></label>
+        <span class="muted" id="expCount"></span>
+      </div>
+    </div>
+    <div class="grid-explore">
+      <div class="card listcard"><div id="expList" class="rowlist"></div><div class="row" id="expPager"></div></div>
+      <div class="card detailcard"><div id="expDetail" class="empty">Pick a response on the left to read it in full, with the item it was answering and every flag raised against it.</div></div>
+    </div>
+  </section>
+
+  <!-- ---------------------------------------------------------------- items -->
+  <section id="tab-items" class="tab">
+    <div class="card">
+      <div class="row wrap">
+        <label class="inline">Class <select id="itemClass"></select></label>
+        <span class="muted" id="itemCount"></span>
+      </div>
+      <div id="classBlurb" class="blurb"></div>
+    </div>
+    <div id="itemList"></div>
+  </section>
+
+  <!-- ---------------------------------------------------------------- help -->
+  <section id="tab-help" class="tab">
+    <div id="helpBody"></div>
+  </section>
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

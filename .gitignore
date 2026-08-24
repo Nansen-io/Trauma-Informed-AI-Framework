@@ -2,3 +2,9 @@
 __pycache__/
 _to_delete/
 benchmark/fixtures/*.png
+benchmark/gui/node_modules/
+
+# Run outputs stay local by default. A product run holds full transcripts of the systems under test, which say a
+# great deal about their prompts. Commit a specific run deliberately with `git add -f` when it is the record you
+# intend to publish.
+benchmark/results/

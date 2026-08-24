@@ -1,0 +1,13 @@
+{
+  "name": "tiab-product-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Translates between the TIAB harness http adapter and the joliroDetect / joliroRisk chat APIs.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

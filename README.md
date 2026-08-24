@@ -19,7 +19,8 @@ The framework is deliberately model agnostic: it is the fixed measure, and base 
 | `Trauma Informed AI Safety Benchmark and Assurance Framework v1.1.docx` | Source document |
 | `Trauma Informed AI Safety Benchmark and Assurance Framework v1.0.docx` | Superseded first release, retained for citation continuity |
 | `TIAB Journal Article Draft v0.7.docx` | Journal article manuscript (Collins, Macdonald, Romano and Alam), in preparation |
-| `benchmark/` | The public English seed item set (200 items, 23 classes) and the run, validate, judge and analysis harness. See `benchmark/README.md` for set-up, running, the scoring panel workflow and what a run does and does not establish. |
+| `TESTING.md` | **How to run the benchmark and read the results** — start here if you are running a test rather than reading the framework. |
+| `benchmark/` | The public English seed item set (200 items, 23 classes) and the run, validate, judge and analysis harness. See `benchmark/README.md` for set-up, running, the scoring panel workflow and what a run does and does not establish. `benchmark/gui` (`npm start`) is a local control panel over it: choose the run size, watch the run happen, and read the results back with the framework's vocabulary attached. |
 
 ## The framework at a glance
 

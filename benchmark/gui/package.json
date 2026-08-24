@@ -1,0 +1,14 @@
+{
+  "name": "tiab-benchmark-gui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local control panel for the TIAB public benchmark harness: choose a run size, watch it happen, read what it produced.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
