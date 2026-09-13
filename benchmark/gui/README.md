@@ -120,3 +120,7 @@ gui/
 The progress channel is `run.py --progress`, which prints one `@@TIAB {json}` line per stage boundary and
 per completed call alongside its normal output. Without the flag the harness prints exactly what it always
 did.
+
+---
+
+Licensed under the Apache License 2.0; see `LICENSE` in the repository root.

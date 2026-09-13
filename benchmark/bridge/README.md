@@ -68,3 +68,7 @@ check the plan panel's estimate before committing to a large run.
   is not exercised by this route — testing it needs the product's own upload path, per framework §7.
 - Each item is a fresh conversation. Detect's audit is a 43-step stateful ledger; a single-turn benchmark item
   exercises the prompt, not the ledger.
+
+---
+
+Licensed under the Apache License 2.0; see `LICENSE` in the repository root.

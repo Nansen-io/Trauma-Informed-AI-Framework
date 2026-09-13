@@ -236,7 +236,7 @@ Overturned instances are removed from the gates and **listed in the report**, ne
 
 ```
 benchmark/
-├── items/            200 items, 23 classes, 4 suites — the instrument itself
+├── items/            187 items, 23 classes, 4 suites — the instrument itself
 ├── harness/
 │   ├── doctor.py     checks the instrument before it is used; --probe proves the model ids work
 │   ├── run.py        variants → systems under test → judge → second judge
@@ -250,3 +250,12 @@ benchmark/
 
 `benchmark/README.md` is the detailed reference: item design, validator behaviour, the scoring panel workflow,
 and the framework sections each part implements.
+
+---
+
+## 9. Licence
+
+The item set and the documentation are released under **CC BY 4.0**; the harness, control panel and bridge under
+the **Apache License 2.0**. `LICENSE` in the repository root maps every path to its licence. Run outputs under
+`results/` are not part of the release.
+

@@ -1,0 +1,70 @@
+# Licence
+
+Copyright © 2026 The Digital Safeguard Centre (Andrew Collins and Rose Macdonald).
+
+This repository is published for public use under two open licences. Which one applies depends on
+whether the material is **written work** or **software**.
+
+| What | Licence | Full text |
+| --- | --- | --- |
+| The framework documents, the benchmark item set, and all documentation | **CC BY 4.0** (Creative Commons Attribution 4.0 International) | [LICENSE-CC-BY-4.0.txt](LICENSE-CC-BY-4.0.txt) · [summary](https://creativecommons.org/licenses/by/4.0/) |
+| The harness, the control panel, the bridge, and every other piece of source code | **Apache License 2.0** | [LICENSE-APACHE-2.0.txt](LICENSE-APACHE-2.0.txt) |
+
+SPDX: `CC-BY-4.0 AND Apache-2.0`
+
+## CC BY 4.0 — the written work
+
+Applies to:
+
+- `Trauma Informed AI Safety Benchmark and Assurance Framework v1.1.pdf` and the `.docx` source
+- `Trauma Informed AI Safety Benchmark and Assurance Framework v1.0.docx` (superseded, retained for citation continuity)
+- `benchmark/items/` — the 187 public English seed items, their gold labels, trigger definitions and `SCHEMA.md`
+- `benchmark/fixtures/`
+- Every `README.md`, `TESTING.md`, and other prose in this repository
+
+You may share and adapt this material, including commercially, for any purpose, provided you give
+appropriate credit, link to the licence, and indicate whether you made changes. There are no
+additional restrictions: adaptation of jurisdiction anchors, risk instruments and seed classes,
+authoring of further benchmark items, and use in paid conformance assessment are all permitted.
+
+**Attribution.** Use the citation in the README, and state clearly whether what you are distributing
+is the framework as published or an adaptation of it. An adaptation must not be presented as the
+Centre's published framework or as carrying the Centre's endorsement.
+
+## Apache 2.0 — the software
+
+Applies to:
+
+- `benchmark/harness/` — the run, validate, judge, analyse and scoreboard tooling
+- `benchmark/gui/` — the local control panel
+- `benchmark/bridge/` — the product adapter
+- Any other source file in this repository, including configuration templates
+
+Apache 2.0 grants patent rights and requires that you keep the licence and copyright notices and
+state significant changes. See [NOTICE](NOTICE).
+
+## Not covered by either licence
+
+- **`TIAB Journal Article Draft v0.7.docx`** — an unpublished manuscript in preparation for
+  peer review. All rights reserved; it is present for co-author working purposes and is not
+  released under CC BY or any other licence.
+- **`benchmark/results/`** — run outputs. These are not part of the release, may contain material
+  from systems belonging to third parties, and are excluded from version control by default.
+- **Trade marks and names.** "The Digital Safeguard Centre" and the names of the authors are not
+  licensed by either licence. Neither licence grants permission to imply endorsement, certification
+  or conformance.
+- **The Centre's own private assurance suite and casework-derived material**, which are not in this
+  repository.
+
+## Conformance and endorsement
+
+Neither licence certifies anything. Conformance under the framework is self-assessed at L1
+(declared) or L2 (verified), against evidence the adopter retains and discloses on request. No
+party, including the Centre, certifies conformance, and no licence granted here should be read as
+doing so.
+
+## Warranty
+
+Both licences disclaim warranties and liability, and those disclaimers are meant literally here.
+This material concerns systems used by people at risk of serious harm. It is offered as a measure,
+not as an assurance, and the adopter remains responsible for the safety of what they deploy.

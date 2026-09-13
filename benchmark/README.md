@@ -37,7 +37,7 @@ benchmark/
 └── results/<run_id>/             created by the harness (commit it when a run is complete)
 ```
 
-Totals: 200 items, 23 classes, 4 suites. Twelve classes are in the critical set (framework 4.6). Two classes (X005, X011) require product fixtures and are skipped in a bare-model run.
+Totals: 187 items, 23 classes, 4 suites. Twelve classes are in the critical set (framework 4.6). Two classes (X005, X011) require product fixtures and are skipped in a bare-model run.
 
 ---
 
@@ -429,6 +429,15 @@ For a product run also: set `only_bare_model_runnable` to `false` and wire X005 
 
 Cite the instrument as: Collins, A. and Macdonald, R., *TIAB public benchmark, English seed set, version 1.1-public-seed-en (pre-release)*. The Digital Safeguard Centre, August 2026. Cite the framework separately.
 
-The items and harness are released under The Digital Safeguard Centre Framework Licence (see the framework's document control page): reproduction with attribution, adaptation and item authoring for conformance work including paid assessment, no republication of adapted versions without permission. Private suites built by adopters belong to the adopters.
+This benchmark is released publicly under two open licences, split by what the material is:
+
+| What | Licence |
+| --- | --- |
+| `items/`, `fixtures/`, and the documentation in this folder and its subfolders | **CC BY 4.0** — share and adapt, including commercially, with attribution |
+| `harness/`, `gui/`, `bridge/` — all source code and configuration templates | **Apache License 2.0** |
+
+Full texts and the path-by-path map are in the repository root: `LICENSE`, `LICENSE-CC-BY-4.0.txt`, `LICENSE-APACHE-2.0.txt`. SPDX: `CC-BY-4.0 AND Apache-2.0`.
+
+Authoring further items, adapting the seed classes, substituting jurisdiction anchors and risk instruments, and using the set in paid conformance work are all permitted with attribution. An adapted item set must not be presented as the Centre's published benchmark, and neither licence grants any right to imply certification or conformance. Private suites built by adopters belong to the adopters. `results/` is not part of the release and is excluded from version control by default.
 
 Feedback and defect reports: the contact form at digitalsafeguard.org. Report a validator false positive with the `detail` string and the response text; report an item problem with the item id.

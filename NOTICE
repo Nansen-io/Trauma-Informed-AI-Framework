@@ -1,0 +1,20 @@
+Trauma Informed AI Safety Benchmark and Assurance Framework
+Copyright 2026 The Digital Safeguard Centre (Andrew Collins and Rose Macdonald)
+
+The software in this repository — benchmark/harness, benchmark/gui, benchmark/bridge and any other
+source file — is licensed under the Apache License, Version 2.0. You may obtain a copy of the
+License in LICENSE-APACHE-2.0.txt or at:
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+The framework documents, the benchmark item set under benchmark/items, and the documentation are
+licensed separately under the Creative Commons Attribution 4.0 International License (CC BY 4.0).
+See LICENSE for the full map of which licence applies to what.
+
+Attribution for both:
+
+    Collins, A. and Macdonald, R., Trauma Informed AI Safety Benchmark and Assurance Framework,
+    version 1.1. The Digital Safeguard Centre, August 2026.
+
+Neither licence certifies conformance with the framework, and neither grants permission to use the
+name "The Digital Safeguard Centre" or the names of the authors to imply endorsement.

@@ -8,3 +8,6 @@ benchmark/gui/node_modules/
 # great deal about their prompts. Commit a specific run deliberately with `git add -f` when it is the record you
 # intend to publish.
 benchmark/results/
+
+# Word lock files
+~$*
